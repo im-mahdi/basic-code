@@ -1,8 +1,4 @@
 import csv
-
-contact = []  
-
-
 class Contact:
     def __init__(self, name, phone_number):
         if phone_number.isdigit():
@@ -13,19 +9,44 @@ class Contact:
 
 
 class PhoneBook:
+    def __init__(self):
+        self.contact=[]
+
     def add_contact(self, name, phone):
         c = Contact(name, phone)
-        contact.append(c)
+        self.contact.append(c)
 
+    def save_to_csv(self,filename):
+        try:
+            with open(filename, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(["name", "phone_number"])
+                for c in self.contact:
+                    writer.writerow([c.name, c.phone_number])
+            print("the information has been saved.")
+        except PermissionError:
+            print("file permission error!")
+    def load_from_csv(self,filename):
+        try:
+            with open (filename,"r",encoding="utf-8") as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    try:
+                        c=Contact(row["name"],row["phone_number"])
+                        self.contact.append(c)
+                    except ValueError:
+                        pass
+        except FileNotFoundError:
+            print("not phone book found!.creat a new one.")
+            
+# ------------------ MENU ------------------
 
 phonebook = PhoneBook()
+phonebook.load_from_csv("Contact.csv")
 
-# ------------------ MENU ------------------
 while True:
     try:
-        p = int(input(
-            "enter 1(add) / 2(show) / 3(save & exit): "
-        ))
+        p = int(input("enter 1(add) / 2(show) / 3(save & exit): "))
     except ValueError:
         print("please enter a number!")
         continue
@@ -41,24 +62,14 @@ while True:
             print(e)
 
     elif p == 2:
-        if not contact:
+        if not phonebook.contact:
             print("no contacts available.")
         else:
-            for c in contact:
+            for c in phonebook.contact:
                 print(c.name, "-", c.phone_number)
 
     elif p == 3:
-        try:
-            with open("Contact.csv", "w", newline="", encoding="utf-8") as f:
-                writer = csv.writer(f)
-                writer.writerow(["name", "phone_number"])
-                for c in contact:
-                    writer.writerow([c.name, c.phone_number])
-            print("the information has been saved.")
-        except PermissionError:
-            print("file permission error!")
-
+        phonebook.save_to_csv("Contact.csv")
         break
-
     else:
         print("please enter 1, 2 or 3.")

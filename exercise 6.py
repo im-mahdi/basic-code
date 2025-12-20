@@ -1,37 +1,51 @@
-class Vehicle:
-    def __init__(self, brand, year):
-        self.brand = brand
-        self.year = year
-
-    def display_info(self):
-        print(f"Brand: {self.brand}")
-        print(f"Year: {self.year}")
-
-
-class Car(Vehicle):
-    def __init__(self, brand, year, num_doors):
-        super().__init__(brand, year)
-        self.num_doors = num_doors
-
-    def display_info(self):
-        super().display_info()
-        print(f"Number of Doors: {self.num_doors}")
+from abc import ABC, abstractmethod
+class Shapes:
+    def __init__(self):
+        pass
+    def calculate_area():
+        pass
+    def calculate_perimeter():
+        pass
 
 
-class Motorcycle(Vehicle):
-    def __init__(self, brand, year, has_sidecar):
-        super().__init__(brand, year)
-        self.has_sidecar = has_sidecar
+class Rectangle(Shapes):
+    def __init__(self,height,width):
+        self.height=height
+        self.width=width
 
-    def display_info(self):
-        super().display_info()
-        print(f"Has Sidecar: {self.has_sidecar}")
+    def calculate_area(self):
+        return(self.height*self.width)
+
+    def calculate_perimeter(self):
+        return(2*self.height)+(2*self.width)
 
 
-# Creating objects and calling display_info
-car1 = Car("Toyota", 2020, 4)
-motor1 = Motorcycle("Honda", 2018, True)
+class Circle(Shapes):
+    def __init__(self,radius):
+        self.radius=radius
 
-car1.display_info()
-print("---")
-motor1.display_info()
+    def calculate_area(self):
+        return(self.radius*self.radius*3.14159)
+        
+    def calculate_perimeter(self):
+        return(self.radius+self.radius)*3.14159
+
+shapes=[]
+    
+r1=Rectangle(20,10)
+c1=Circle(3)
+
+
+shapes.append(r1)
+shapes.append(c1)
+
+
+print(" ")
+
+
+for shape in shapes:
+    print(" ")
+    print(f"the area for shapes : {shape.calculate_area()}")
+    print(" ")
+    print(f"the perimeter for shapes : {shape.calculate_perimeter()}")
+    print(30 * "-")
